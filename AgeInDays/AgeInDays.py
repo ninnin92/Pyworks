@@ -89,3 +89,9 @@ if __name__ == '__main__':
     print ("Age_in_days  " + age_in_days)
     print ("Age_details  " + age_details)
     print ("********************************************")
+
+# 処理のポーズ（何かしらの入力でプログラム終了）
+    if sys.version_info.major > 2:
+        input()
+    else:
+        raw_input()
