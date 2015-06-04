@@ -3,7 +3,20 @@
 # env: Python3.3
 # python2系でも動くように調整済み
 
+import sys
 from datetime import date, timedelta, datetime
+
+
+# 誕生日を入力させる
+def get_birthday():
+    # 入力待ち(exceptでPython2系にも対応)
+    if sys.version_info.major > 2:  # 3系かどうかの判定
+            bday = input('Please enter your birthday (e.g. 2015/06/04)  ')
+    else:
+            def input(text):
+                return raw_input(text)  # python2ではraw_input
+            bday = input('Please enter your birthday (e.g. 2015/06/04)  ')
+    return bday
 
 
 # y年における誕生日（閏日補正含む）
@@ -45,36 +58,34 @@ def count_days(b, t):
         days = (t - before).days
     return days
 
+if __name__ == '__main__':
+    # 日付設定(今日)
+    today = date.today()
 
-# 日付設定(今日)
-today = date.today()
+    # 誕生日を入力させて、datetime型に変換（例外処理つき）
+    while True:
+        try:
+            bd = get_birthday()
+            bd = datetime.strptime(bd, "%Y/%m/%d")
+            break
+        except ValueError:
+            print ("Error: Please one more!!")
+    your_birthday = bd.strftime('%Y/%m/%d')
+    birthday = date(bd.year, bd.month, bd.day)
 
-# 入力待ち(exceptでPython2系にも対応)
-try:
-    bd = input('Please enter your birthday (e.g. "2015/06/04")  ')
-except:
-    def input(text):
-        return raw_input(text)  # python2ではraw_input
-    bd = input('Please enter your birthday (e.g. "2015/06/04")  ')
-    pass
+    # 年齢を表示
+    age = str(count_years(birthday, today))
+    age_months = str(count_months(birthday, today))
+    age_in_days = str((today - birthday).days)
+    age_year_months = str(count_year_months(birthday, today))
+    age_days = str(count_days(birthday, today))
 
-# 誕生日をdatetime型に設定
-bd = datetime.strptime(bd, "%Y/%m/%d")
-birthday = date(bd.year, bd.month, bd.day)
+    age_details = age + "years " + age_year_months + "months " + age_days + "days"
 
-# 年齢を表示
-age = str(count_years(birthday, today))
-age_months = str(count_months(birthday, today))
-age_in_days = str((today - birthday).days)
-age_year_months = str(count_year_months(birthday, today))
-age_days = str(count_days(birthday, today))
-
-age_details = age + "years " + age_year_months + "months " + age_days + "days"
-
-
-print ("********************************************")  # python2では()なし
-print ("Age  " + age)
-print ("Age_months  " + age_months)
-print ("Age_in_days  " + age_in_days)
-print ("Age_details  " + age_details)
-print ("********************************************")
+    print ("********************************************")  # python2では()なし
+    print ("Your birthday  " + your_birthday)
+    print ("Age  " + age)
+    print ("Age_months  " + age_months)
+    print ("Age_in_days  " + age_in_days)
+    print ("Age_details  " + age_details)
+    print ("********************************************")
