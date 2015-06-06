@@ -19,7 +19,7 @@ def get_birthday():
     return bday
 
 
-# y年における誕生日（閏日補正含む）
+# 年齢の計算（閏日補正含む） ：今何歳何ヶ月なのか？
 def count_years(b, t):
     try:
         this_year = b.replace(year=t.year)
@@ -31,7 +31,13 @@ def count_years(b, t):
     if today < this_year:
         age -= 1
 
-    return age
+# 何歳”何ヶ月”を計算
+    if (t.day - b.day) >= 0:
+        year_months = (t.year - b.year)*12 - age*12 + (t.month - b.month)
+    else:
+        year_months = (t.year - b.year)*12 - age*12 + (t.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
+
+    return age, year_months
 
 
 # 月齢の計算
@@ -40,12 +46,6 @@ def count_months(b, t):
         months = (t.year - b.year)*12 + (t.month - b.month)
     else:
         months = (t.year - b.year)*12 + (t.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
-    return months
-
-
-# 何歳”何ヶ月”を計算
-def count_year_months(b, t):
-    months = t.month - b.month  # 月の引き算
     return months
 
 
@@ -74,11 +74,11 @@ if __name__ == '__main__':
     birthday = date(bd.year, bd.month, bd.day)
 
     # 年齢を表示
-    age = str(count_years(birthday, today))
+    age = str(count_years(birthday, today)[0])
+    age_year_months = str(count_years(birthday, today)[1])
+    age_days = str(count_days(birthday, today))
     age_months = str(count_months(birthday, today))
     age_in_days = str((today - birthday).days)
-    age_year_months = str(count_year_months(birthday, today))
-    age_days = str(count_days(birthday, today))
 
     age_details = age + "years " + age_year_months + "months " + age_days + "days"
 
