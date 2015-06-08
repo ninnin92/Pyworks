@@ -6,61 +6,93 @@
 import sys
 from datetime import date, timedelta, datetime
 
+################################################
+#  処理関数
+################################################
+
+
+def day_input(text=None):
+    if text is None:
+        if sys.version_info.major > 2:  # 3系かどうかの判定
+            return input()
+        else:
+            return raw_input()  # python2ではraw_input
+    else:
+        if sys.version_info.major > 2:  # 3系かどうかの判定
+            return input(text)
+        else:
+            return raw_input(text)  # python2ではraw_input
+
+
+def set_day():
+    sday = day_input('Please enter base date (e.g. 2015/06/04, None => today)  ')
+    return sday
+
 
 # 誕生日を入力させる
 def get_birthday():
-    # 入力待ち(exceptでPython2系にも対応)
-    if sys.version_info.major > 2:  # 3系かどうかの判定
-            bday = input('Please enter your birthday (e.g. 2015/06/04)  ')
-    else:
-            def input(text):
-                return raw_input(text)  # python2ではraw_input
-            bday = input('Please enter your birthday (e.g. 2015/06/04)  ')
+    # 入力待ち(関数を別に作ってPython2系にも対応)
+    bday = day_input('Please enter ones birthday (e.g. 2015/06/04)  ')
     return bday
 
 
 # 年齢の計算（閏日補正含む） ：今何歳何ヶ月なのか？
-def count_years(b, t):
+def count_years(b, s):
     try:
-        this_year = b.replace(year=t.year)
+        this_year = b.replace(year=s.year)
     except ValueError:
         b += timedelta(days=1)
-        this_year = b.replace(year=t.year)
+        this_year = b.replace(year=s.year)
 
-    age = t.year - b.year
-    if today < this_year:
+    age = s.year - b.year
+    if base_day < this_year:
         age -= 1
 
 # 何歳”何ヶ月”を計算
-    if (t.day - b.day) >= 0:
-        year_months = (t.year - b.year)*12 - age*12 + (t.month - b.month)
+    if (s.day - b.day) >= 0:
+        year_months = (s.year - b.year)*12 - age*12 + (s.month - b.month)
     else:
-        year_months = (t.year - b.year)*12 - age*12 + (t.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
+        year_months = (s.year - b.year)*12 - age*12 + (s.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
 
     return age, year_months
 
 
 # 月齢の計算
-def count_months(b, t):
-    if (t.day - b.day) >= 0:
-        months = (t.year - b.year)*12 + (t.month - b.month)
+def count_months(b, s):
+    if (s.day - b.day) >= 0:
+        months = (s.year - b.year)*12 + (s.month - b.month)
     else:
-        months = (t.year - b.year)*12 + (t.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
+        months = (s.year - b.year)*12 + (s.month - b.month) - 1  # 誕生日が来るまでは月齢も-1
     return months
 
 
 # 月齢および何歳何ヶ月の余り日数（何歳何ヶ月”何日”）
-def count_days(b, t):
-    if (t.day - b.day) >= 0:
-        days = t.day - b.day
+def count_days(b, s):
+    if (s.day - b.day) >= 0:
+        days = s.day - b.day
     else:
-        before = t.replace(month=t.month-1, day=b.day)
-        days = (t - before).days
+        before = s.replace(month=s.month-1, day=b.day)
+        days = (s - before).days
     return days
 
+
+################################################
+#  メイン処理
+################################################
+
+
 if __name__ == '__main__':
-    # 日付設定(今日)
-    today = date.today()
+    # 日付設定(入力なしで今日にセット)
+    while True:
+        try:
+            sd = set_day()
+            sd = datetime.strptime(sd, "%Y/%m/%d")
+            break
+        except ValueError:
+            sd = date.today()
+            break
+    base_date = sd.strftime('%Y/%m/%d')
+    base_day = date(sd.year, sd.month, sd.day)
 
     # 誕生日を入力させて、datetime型に変換（例外処理つき）
     while True:
@@ -74,16 +106,17 @@ if __name__ == '__main__':
     birthday = date(bd.year, bd.month, bd.day)
 
     # 年齢を表示
-    age = str(count_years(birthday, today)[0])
-    age_year_months = str(count_years(birthday, today)[1])
-    age_days = str(count_days(birthday, today))
-    age_months = str(count_months(birthday, today))
-    age_in_days = str((today - birthday).days)
+    age = str(count_years(birthday, base_day)[0])
+    age_year_months = str(count_years(birthday, base_day)[1])
+    age_days = str(count_days(birthday, base_day))
+    age_months = str(count_months(birthday, base_day))
+    age_in_days = str((base_day - birthday).days)
 
     age_details = age + "years " + age_year_months + "months " + age_days + "days"
 
     print ("********************************************")  # python2では()なし
-    print ("Your birthday  " + your_birthday)
+    print ("Base date  " + base_date)
+    print ("Birthday  " + your_birthday)
     print ("Age  " + age)
     print ("Age_months  " + age_months)
     print ("Age_in_days  " + age_in_days)
@@ -91,7 +124,4 @@ if __name__ == '__main__':
     print ("********************************************")
 
 # 処理のポーズ（何かしらの入力でプログラム終了）
-    if sys.version_info.major > 2:
-        input()
-    else:
-        raw_input()
+    day_input()
