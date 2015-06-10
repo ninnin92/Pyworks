@@ -7,6 +7,12 @@ import sys
 from datetime import date, timedelta, datetime
 
 ################################################
+#  宣言
+################################################
+
+continue_roop = True
+
+################################################
 #  処理関数
 ################################################
 
@@ -82,46 +88,53 @@ def count_days(b, s):
 
 
 if __name__ == '__main__':
-    # 日付設定(入力なしで今日にセット)
-    while True:
-        try:
-            sd = set_day()
-            sd = datetime.strptime(sd, "%Y/%m/%d")
+    while continue_roop:
+        # 日付設定(入力なしで今日にセット)
+        while True:
+            try:
+                sd = set_day()
+                sd = datetime.strptime(sd, "%Y/%m/%d")
+                break
+            except ValueError:
+                sd = date.today()
+                break
+        base_date = sd.strftime('%Y/%m/%d')
+        base_day = date(sd.year, sd.month, sd.day)
+        print (base_day)
+
+        # 誕生日を入力させて、datetime型に変換（例外処理つき）
+        while True:
+            try:
+                bd = get_birthday()
+                bd = datetime.strptime(bd, "%Y/%m/%d")
+                break
+            except ValueError:
+                print ("Error: Please one more!!")
+        your_birthday = bd.strftime('%Y/%m/%d')
+        birthday = date(bd.year, bd.month, bd.day)
+        print(birthday)
+
+        # 年齢を表示
+        age             = str(count_years(birthday, base_day)[0])
+        age_year_months = str(count_years(birthday, base_day)[1])
+        age_days        = str(count_days(birthday, base_day))
+        age_months      = str(count_months(birthday, base_day))
+        age_in_days     = str((base_day - birthday).days)
+
+        age_details = age + "years " + age_year_months + "months " + age_days + "days"
+
+        print ("********************************************")  # python2では()なし
+        print ("Base date  " + base_date)
+        print ("Birthday  " + your_birthday)
+        print ("Age  " + age)
+        print ("Age_months  " + age_months)
+        print ("Age_in_days  " + age_in_days)
+        print ("Age_details  " + age_details)
+        print ("********************************************")
+
+    # 処理のポーズ（y/nでループ続行 or プログラム終了）
+        exit = day_input("Exit? Please input y/n   ")
+        if exit == "n":
+            continue
+        else:
             break
-        except ValueError:
-            sd = date.today()
-            break
-    base_date = sd.strftime('%Y/%m/%d')
-    base_day = date(sd.year, sd.month, sd.day)
-
-    # 誕生日を入力させて、datetime型に変換（例外処理つき）
-    while True:
-        try:
-            bd = get_birthday()
-            bd = datetime.strptime(bd, "%Y/%m/%d")
-            break
-        except ValueError:
-            print ("Error: Please one more!!")
-    your_birthday = bd.strftime('%Y/%m/%d')
-    birthday = date(bd.year, bd.month, bd.day)
-
-    # 年齢を表示
-    age             = str(count_years(birthday, base_day)[0])
-    age_year_months = str(count_years(birthday, base_day)[1])
-    age_days        = str(count_days(birthday, base_day))
-    age_months      = str(count_months(birthday, base_day))
-    age_in_days     = str((base_day - birthday).days)
-
-    age_details = age + "years " + age_year_months + "months " + age_days + "days"
-
-    print ("********************************************")  # python2では()なし
-    print ("Base date  " + base_date)
-    print ("Birthday  " + your_birthday)
-    print ("Age  " + age)
-    print ("Age_months  " + age_months)
-    print ("Age_in_days  " + age_in_days)
-    print ("Age_details  " + age_details)
-    print ("********************************************")
-
-# 処理のポーズ（何かしらの入力でプログラム終了）
-    day_input()
