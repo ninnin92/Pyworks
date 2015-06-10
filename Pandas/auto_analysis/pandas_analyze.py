@@ -9,7 +9,7 @@ import pandas as pd
 
 # データ入力・出力設定
 ############################################################
-ID = "H26-08"
+ID = "H26-16"
 ###########################################################
 
 # 自作関数
@@ -63,7 +63,7 @@ def errors(series):  # エラーのSeriesから、エラー数とエラーした
 
 def exclude(df, series):  # エラーした次のStepを除外する関数
     for n in series:
-        df = df[df.step != n+1]  # データフレームから該当Stepを除外→更新を1つずつやる
+        df = df[df.step != n + 1]  # データフレームから該当Stepを除外→更新を1つずつやる
     else:
         pass
 
@@ -129,8 +129,6 @@ for dt in data_list:  # データリストから1つ選択
         L_errors, R_exd_list = errors(Le_data)
         R_errors, L_exd_list = errors(Re_data)
 
-        # COVを計算する
-
         # LとRの成功試行を抽出
         Lt_df = data[data["category"] == "0.L"]
         Rt_df = data[data["category"] == "5.R"]
@@ -174,22 +172,26 @@ for dt in data_list:  # データリストから1つ選択
         # Summaryの作成
         if exp == "prac" or exp == "joint":
             summary = pd.DataFrame({"exp": [exp] * 7,
-                                                        "trialN": [tN] * 7,
-                                                        "Parent": [time, L_press, L_errors, L_interval, L_SD, L_SE, L_COV],
-                                                        "Child": [time, R_press, R_errors, R_interval, R_SD, R_SE, R_COV]},
-                                                        index=["Time", "Press", "Error", "interval", "SD", "SE", "COV"]
-                                                        )
+                                    "trialN": [tN] * 7,
+                                    "Parent": [time, L_press, L_errors, L_interval, L_SD, L_SE, L_COV],
+                                    "Child": [time, R_press, R_errors, R_interval, R_SD, R_SE, R_COV]},
+                                    index=["Time", "Press", "Error", "interval", "SD", "SE", "COV"]
+                                   )
         else:
             summary = pd.DataFrame({"exp": [exp] * 7,
-                                                        "trialN": [tN] * 7,
-                                                        "Left": [time, L_press, L_errors, L_interval, L_SD, L_SE, L_COV],
-                                                        "Right": [time, R_press, R_errors, R_interval, R_SD, R_SE, R_COV]},
-                                                        index=["Time", "Press", "Error", "interval", "SD", "SE", "COV"]
-                                                        )
+                                    "trialN": [tN] * 7,
+                                    "Left": [time, L_press, L_errors, L_interval, L_SD, L_SE, L_COV],
+                                    "Right": [time, R_press, R_errors, R_interval, R_SD, R_SE, R_COV]},
+                                    index=["Time", "Press", "Error", "interval", "SD", "SE", "COV"]
+                                   )
 
-        R_sum = pd.DataFrame({"trial": [t_num], "C": [condition], "time": [time], "p": [R_press], "error": [R_errors], "interval": [R_interval], "COV": [R_COV],
-                                                  "p_L": [L_press], "error_L": [L_errors], "interval_L": [L_interval], "COV_L": [L_COV]},
-                                                   index=[ID], columns=["trial", "C", "time", "p", "error", "COV", "interval", "p_L", "error_L", "COV_L", "interval_L"])
+        R_sum = pd.DataFrame({"trial": [t_num], "C": [condition], "time": [time],
+                              "p": [R_press], "error": [R_errors], "interval": [R_interval],
+                              "COV": [R_COV], "p_L": [L_press], "error_L": [L_errors],
+                              "interval_L": [L_interval], "COV_L": [L_COV]},
+                              index=[ID], columns=["trial", "C", "time", "p", "error", "COV",
+                              "interval", "p_L", "error_L", "COV_L", "interval_L"]
+                            )
 
         df_set = pd.concat([df_set, summary])
         R_set = pd.concat([R_set, R_sum])
