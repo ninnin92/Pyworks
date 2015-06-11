@@ -133,7 +133,7 @@ if __name__ == '__main__':
         print ("********************************************")
 
     # 処理のポーズ（y/nでループ続行 or プログラム終了）
-        exit = day_input("Exit? Please input y/n   ")
+        exit = day_input("Exit? Please input y/n (yes or no)   ")
         if exit == "n":
             continue
         else:
