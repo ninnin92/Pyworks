@@ -1,0 +1,43 @@
+#: import Button kivy.uix.button.Button
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemLabel kivy.uix.listview.ListItemLabel
+
+<logtime>:
+    hit1: hit_button1
+    hit2: hit_button2
+    hit3: hit_button3
+    timel: timelist
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Button:
+        id: hit_button1
+        text: "Hit1"
+        size: root.width/4, root.width/4
+        center_x: (root.width/6)
+        center_y: ((root.height/4)*3)
+        on_press: app.time_get()
+    Button:
+        id: hit_button2
+        text: "Hit2"
+        size: root.width/4, root.width/4
+        center_x: (root.width/2)
+        center_y: ((root.height/4)*3)
+        on_press: app.time_get()
+    Button:
+        id: hit_button3
+        text: "Hit3"
+        size: root.width/4, root.width/4
+        center_x: ((root.width/6)*5)
+        center_y: ((root.height/4)*3)
+        on_press: app.time_get()
+    ListView:
+        id: timelist
+        adapter: ListAdapter(data=root.data,cls=ListItemLabel,selection_mode='single',allow_empty_selection=True)
+        size: root.width/2, root.height/2
+        center_x: (root.width/2)
+        center_y: (root.height/4)
+
