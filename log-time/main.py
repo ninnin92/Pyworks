@@ -4,10 +4,6 @@
 from kivy.config import Config
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.button import Button
-#from kivy.uix.floatlayout import FloatLayout
-#from kivy.adapters.listadapter import ListAdapter
-#from kivy.uix.listview import ListView, ListItemLabel
 import datetime as dt
 
 Config.set('graphics', 'width', '400')
@@ -17,15 +13,18 @@ Config.set('graphics', 'show_cursor', '1')
 
 
 class logtime(Widget):
-    data = ["A"]
     pass
 
 
 class MyApp(App):
+    data = []
     title = 'Log_Time'
 
-    def time_get(src):
-        print (src)
+    def time_get(self, bt):
+        now = "{0:%y-%m-%d %H:%M:%S}".format(dt.datetime.now())
+        self.data.append([bt] + [now])
+        self.root.timel.text = bt + " --- " + now
+        print self.root.timel.text
 
     def build(self):
         return logtime()
@@ -35,6 +34,7 @@ class MyApp(App):
 
     def on_stop(self):
         print ("Stop!")
+        print (self.data)
 
     def on_pause(self):
         return True
