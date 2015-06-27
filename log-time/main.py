@@ -21,7 +21,7 @@ class MyApp(App):
     title = 'Log_Time'
 
     def time_get(self, bt):
-        now = "{0:%y-%m-%d %H:%M:%S}".format(dt.datetime.now())
+        now = "{0:%y/%m/%d %H:%M:%S}".format(dt.datetime.now())
         self.data.append([bt] + [now])
         self.root.timel.text = bt + " --- " + now
         print self.root.timel.text
