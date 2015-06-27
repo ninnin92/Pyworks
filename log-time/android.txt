@@ -1,0 +1,3 @@
+title=Log-Time
+author=naoki_furuhata
+orientation=portrait
