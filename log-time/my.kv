@@ -10,15 +10,15 @@
 
     canvas.before:
         Color:
-            rgba: [0.85, 0.85, 0.85, 1]
+            rgba: [0.8, 0.8, 0.8, 1]
         Rectangle:
             pos: self.pos
             size: self.size
 
     Button:
         id: hit_button1
-        text: "Hit1"
-        font_size: 28
+        text: app.bt1
+        font_size: 36
         color: [0.2, 0.70588, 0.56470, 1]
         background_normal: "Resource/button_normal.png"
         background_down: "Resource/button_down.png"
@@ -26,13 +26,13 @@
         size: root.width/4, root.width/4
         center_x: (root.width/6)
         center_y: ((root.height/4)*3)
-        on_press: app.time_get("hit1")
-        on_release: app.bt_release()
+        on_press: app.time_get(1)
+        on_release: app.bt_release(1)
 
     Button:
         id: hit_button2
-        text: "Hit2"
-        font_size: 28
+        text: app.bt2
+        font_size: 36
         color: [0.2, 0.70588, 0.56470, 1]
         background_normal: "Resource/button_normal.png"
         background_down: "Resource/button_down.png"
@@ -40,13 +40,13 @@
         size: root.width/4, root.width/4
         center_x: (root.width/2)
         center_y: ((root.height/4)*3)
-        on_press: app.time_get("hit2")
-        on_release: app.bt_release()
+        on_press: app.time_get(2)
+        on_release: app.bt_release(2)
 
     Button:
         id: hit_button3
-        text: "Hit3"
-        font_size: 28
+        text: app.bt3
+        font_size: 36
         color: [0.2, 0.70588, 0.56470, 1]
         background_normal: "Resource/button_normal.png"
         background_down: "Resource/button_down.png"
@@ -54,32 +54,32 @@
         size: root.width/4, root.width/4
         center_x: ((root.width/6)*5)
         center_y: ((root.height/4)*3)
-        on_press: app.time_get("hit3")
-        on_release: app.bt_release()
+        on_press: app.time_get(3)
+        on_release: app.bt_release(3)
 
     Label:
         text: "# Last_Log"
         color: [0.2, 0.70588, 0.56470, 1]
-        font_size: 24
+        font_size: 36
         bold: True
         size: root.width/2, root.height/2
-        center_x: (root.width/2 - 120)
-        center_y: (root.height/4 + 120)
+        center_x: (root.width/6 + 10)
+        center_y: (root.height/2)
 
     Label:
         id: time_label1
         text: "*  Last_Log"
         color: [0.2117, 0.23529, 0.36470, 1]
-        font_size: 24
+        font_size: 36
         size: root.width/2, root.height/2
         center_x: (root.width/2)
-        center_y: (root.height/4 + 60)
+        center_y: ((root.height/8) * 3)
 
     Label:
         id: time_label2
         text: "*  Last_Log"
         color: [0.2117, 0.23529, 0.36470, 1]
-        font_size: 24
+        font_size: 36
         size: root.width/2, root.height/2
         center_x: (root.width/2)
         center_y: (root.height/4)
@@ -88,8 +88,8 @@
         id: time_label3
         text: "*  Last_Log"
         color: [0.2117, 0.23529, 0.36470, 1]
-        font_size: 24
+        font_size: 36
         size: root.width/2, root.height/2
         center_x: (root.width/2)
-        center_y: (root.height/4 - 60)
+        center_y: (root.height/8)
 
