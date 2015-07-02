@@ -7,25 +7,15 @@ import git
 import pandas as pd
 
 if sys.platform == "win32":
-    ref_path = "C:\Users\itaken322\Documents\Reserch\Rstudio"
+    ref_path = "C:\\Users\\itaken322\\Dropbox\\Inbox\\Python\\test_repo"
 else:
     ref_path = "hogehoge"
 
 g = git.Git(ref_path)
 commit = g.log("--date=short", "--pretty=format:%ad,%s").encode('utf_8')
 
-data = []
-commit = commit.split(",")
-print(commit[0])
-for i in range(0, 100, 2):
-    try:
-        data.append([commit[i], commit[i + 1]])
-    except IndexError:
-        break
-
-print(data)
+print(commit)
 
 fp = open("commit_ref.csv", "w")
-for x in data:
-    fp.write("%s, %s\n" % tuple(x))
+fp.write(commit)
 fp.close
