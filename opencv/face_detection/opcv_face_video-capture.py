@@ -40,7 +40,7 @@ if __name__ == '__main__':
     out = cv2.VideoWriter("output.mov", fourcc, 30, (w/2, h/2))  # 出力ビデオのセット
 
     # 顔探索用の機械学習ファイルを取得
-    cascade = cv2.CascadeClassifier("/usr/local/Cellar/opencv/2.4.11/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml")
+    cascade = cv2.CascadeClassifier("C:\opencv\sources\data\haarcascades\haarcascade_frontalface_alt.xml")
 
     frameN = 0  # frameカウント用に
 
@@ -63,6 +63,7 @@ if __name__ == '__main__':
 
             out.write(im)  # 動画の書き込み
         else:
+            print("damepo")
             break
 
         # キーが押されたらループから抜ける

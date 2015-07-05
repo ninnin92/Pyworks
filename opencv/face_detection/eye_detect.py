@@ -5,7 +5,7 @@ if __name__ == '__main__':
     # カメラ映像の取得
     cap = cv2.VideoCapture(0)
     # 目探索用の機械学習ファイルを取得
-    cascade = cv2.CascadeClassifier("/usr/local/Cellar/opencv/2.4.11/share/OpenCV/haarcascades/haarcascade_eye.xml")
+    cascade = cv2.CascadeClassifier("C:\opencv\sources\data\haarcascades\haarcascade_frontalface_alt.xml")
     # 画像の読み込み
     while(1):
         ret, im = cap.read()
