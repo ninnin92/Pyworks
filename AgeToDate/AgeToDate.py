@@ -31,6 +31,7 @@ def key_input(text=None):
             return raw_input(text)  # python2ではraw_input
 
 
+# モードの切替 [1] 年齢と調査日から対象の子の誕生日を推定 [2] 年齢と誕生日から調査日を推定
 def mode_change():
     mode = key_input("Please enter mode number: [1] age to birthday  [2] age to date  ")
     return int(mode)
@@ -57,12 +58,12 @@ def get_age():
             print("Age2:  " + years2 + " years " + months2 + " months " + days2 + " days")
             break
 
-        except (ValueError):
-            age2 = (0, 0, 0)
+        except (IndexError):
+            age2 = [0, 0, 0]
             op_period = False
             break
 
-        except (IndexError):
+        except (ValueError):
             print("Error Age2: Please one more!!")
 
     print("Set age period  :" + str(age1) + "  ~  "  + str(age2))
