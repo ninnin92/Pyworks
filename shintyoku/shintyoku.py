@@ -4,18 +4,20 @@
 
 import sys
 import git
-import pandas as pd
 
+#OSでPathを変更する
 if sys.platform == "win32":
     ref_path = "C:\\Users\\itaken322\\Dropbox\\Inbox\\Python\\test_repo"
 else:
-    ref_path = "hogehoge"
+    ref_path = "/Users/Furuhata/Dropbox/Inbox/Python/test_repo"
 
-g = git.Git(ref_path)
-commit = g.log("--date=short", "--pretty=format:%ad,%s").encode('utf_8')
+g = git.Git(ref_path)  # ローカルリポジトリを指定
+commit = g.log("--date=short", "--pretty=format:%ad,%s")  # コミットログを取得
+# オプションは元々のGitコマンドに由来、ログのフォーマットを指定している
 
 print(commit)
 
+# ログをCSVに
 fp = open("commit_ref.csv", "w")
 fp.write(commit)
 fp.close
