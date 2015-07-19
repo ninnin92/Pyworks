@@ -4,11 +4,11 @@
 import os
 import shutil as sh
 
-print ("** " + os.path.basename(__file__) + " **")
+print("** " + os.path.basename(__file__) + " **")
 
-#移動元・移動先のパス
-from_path = "C:\Users\itaken322\Documents\Experiment\Joint Action_Ladder\Data\Log_site"
-to_path   = "C:\Users\itaken322\Documents\Experiment\Joint Action_Ladder\Data\Log_files"
+# 移動元・移動先のパス
+from_path = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//Data//Log_site"
+to_path   = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//Data//Log_files"
 
 # 除外リスト
 ignore = ["H26-13"]
@@ -23,12 +23,12 @@ copy_list = list(from_list.difference(to_list))
 
 # backup処理
 if len(copy_list) > 0:
-    print (copy_list)
+    print(copy_list)
     print("backup running")
     for cp in copy_list:
         from_copy = from_path + "//" + cp
         sh.copy2(from_copy, to_path)
     print("Complete!!")
 else:
-    print ("No new file")
+    print("No new file")
     pass

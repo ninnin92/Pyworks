@@ -5,18 +5,18 @@ import os
 import pandas as pd
 import openpyxl as opx
 
-print ("** " + os.path.basename(__file__) + " **")
+print("** " + os.path.basename(__file__) + " **")
 
 outpath = "time_analysis.xlsx"
 writer  = pd.ExcelWriter(outpath)
 
-drop_path = "C:/Users/itaken322/Dropbox/Inbox/Experiment/Joint Action_Ladder/Analyze_R/time_analysis.xlsx"
+drop_path = "C://Users//itaken322//Dropbox//Inbox//Experiment//Joint Action_Ladder//Analyze_R//time_analysis.xlsx"
 # ログファイルの読み込み
 log_list = os.listdir("Log_files/")
 
 # 元ファイルの読み込み
 base    = pd.ExcelFile("time_analysis.xlsx")
-df_base = base.parse('time')
+df_base = base.parse('time', index_col="s")
 
 try:
     ID_list    = set(df_base["ID"].tolist())  # メインファイルのIDリストを獲得して、重複削除
@@ -30,16 +30,16 @@ try:
             pass
 
 except KeyError:
-    print ("Full Output")
+    print("Full Output")
     write_list = log_list
 
 if len(write_list) > 0:
-    print ("Run Process")
+    print("Run Process")
     time_set = pd.DataFrame()
     for wt in write_list:
         if "demo" not in wt:
             ID = wt[0:6]  # ID名を取得
-            print ("Begin  " + ID)
+            print("Begin  " + ID)
             wt = "Log_files/" + wt
 
             df = pd.read_csv(wt)
@@ -53,7 +53,7 @@ if len(write_list) > 0:
             df = df[df["step"] > 2]
             df = df[df["step"] < 43]
             time_set = pd.concat([time_set, df], ignore_index=True)  # indexを無視してデータフレームを合体
-            print ("End  " + ID)
+            print("End  " + ID)
         else:
             pass
 
@@ -71,7 +71,7 @@ if len(write_list) > 0:
     book.save(outpath)
     book.save(drop_path)
 
-    print("Completed!")
+    print("Exit Process")
 
 else:
     print("No new file")

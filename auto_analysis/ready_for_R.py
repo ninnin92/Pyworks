@@ -5,7 +5,7 @@ import os
 import pandas as pd
 import openpyxl as opx
 
-print ("** " + os.path.basename(__file__) + " **")
+print("** " + os.path.basename(__file__) + " **")
 
 ############################################################
 # 出力先
@@ -16,7 +16,7 @@ demo_outpath = "joint_adult.xlsx"
 main_writer = pd.ExcelWriter(main_outpath)
 demo_writer = pd.ExcelWriter(demo_outpath)
 
-drop_path = "C:/Users/itaken322/Dropbox/Inbox/Experiment/Joint Action_Ladder/Analyze_R"
+drop_path = "C://Users//itaken322//Dropbox//Inbox//Experiment//Joint Action_Ladder//Analyze_R"
 drop_main = drop_path + "/joint.xlsx"
 drop_demo = drop_path + "/joint_adult.xlsx"
 
@@ -35,7 +35,7 @@ baseD_data = pd.ExcelFile(baseD_path)
 df_baseD = baseD_data.parse('Sheet1', index_col="s")
 
 # 参加者情報ファイル
-sub_path = "C:/Users/itaken322/Documents/Experiment/Joint Action_Ladder/Participant/subject_ladder.csv"
+sub_path = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//Participant//subject_ladder.csv"
 
 subject = pd.read_csv(sub_path)
 subject.drop(subject.columns[[2, 4, 5]], axis=1, inplace=True)  # いらない行の削除
@@ -59,15 +59,15 @@ try:
         else:
             pass
 except KeyError:
-    print ("Full Output")
+    print("Full Output")
     write_list = data_list
 
 # データフレームの加工
 if len(write_list) > 0:  # メインファイルにまだ記載されていないファイルはある？
-    print ("Run Process")
+    print("Run Process")
     for wt in write_list:
         ID_Num = wt[0:6]  # ファイル名からIDを獲得
-        print ("Begin  " + ID_Num)
+        print("Begin  " + ID_Num)
         wt = "data_files/" + wt
 
         # ログファイルからサマリーのDFを作成
@@ -109,7 +109,7 @@ if len(write_list) > 0:  # メインファイルにまだ記載されていな�
     demo_writer.save()
 
     # バックアップとコピー
-    print("coplete write")
+    print("complete write")
 
     # 後処理 先頭行がないとRがエラー出すので入力
     editsheetname = "Sheet1"

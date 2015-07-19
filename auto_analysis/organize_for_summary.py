@@ -8,7 +8,7 @@ import itertools as it
 # import openpyxl as opx
 # import xlsxwriter as xw
 
-print ("** " + os.path.basename(__file__) + " **")
+print("** " + os.path.basename(__file__) + " **")
 
 # データ入力設定
 ############################################################
@@ -84,9 +84,9 @@ def exclude(df, series):  # エラーした次のStepを除外する関数
 ############################################################
 
 if len(new_ID) > 0:
-    print ("Process Run")
+    print("Run Process")
     for ID in new_ID:
-        print ("Now  " + ID)
+        print("Now  " + ID)
         # IDに該当する実験ログファイルを取得
         do_list = []
         file_list = os.listdir("Log_files/")
@@ -237,7 +237,7 @@ if len(new_ID) > 0:
             print("End  " + ID)
 
     else:
-        print("All complete!!")
+        print("Exit Process")
 
 else:  # 新しいIDがなかった時
-    print ("No new ID")
+    print("No new ID")
