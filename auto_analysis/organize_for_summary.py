@@ -91,9 +91,9 @@ if len(new_ID) > 0:
         do_list = []
         file_list = os.listdir("Log_files/")
 
-        fl = next(it.ifilter(lambda x: "demo" in x and ID in x, file_list), None)  # ラムダ式というらしい forの代わりになる
+        fl = next(filter(lambda x: "demo" in x and ID in x, file_list), None)  # ラムダ式というらしい forの代わりになる
         do_list.append(fl)
-        fl = next(it.ifilter(lambda x: "practice" in x and ID in x, file_list), None)
+        fl = next(filter(lambda x: "practice" in x and ID in x, file_list), None)
         do_list.append(fl)
 
         for fl in file_list:
