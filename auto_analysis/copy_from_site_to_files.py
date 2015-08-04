@@ -14,7 +14,7 @@ to_path   = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//D
 ignore = ["H27-13"]
 
 # 差分作成の準備 + 除外リストに該当するファイルを除去
-from_list = [x for x in os.listdir(from_path) if "H26" in x]
+from_list = [x for x in os.listdir(from_path) if "H27" in x]
 from_list = {x for x in from_list for y in ignore if y not in x}
 to_list   = set(os.listdir(to_path))
 
