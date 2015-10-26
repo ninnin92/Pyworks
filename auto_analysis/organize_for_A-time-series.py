@@ -7,15 +7,15 @@ import openpyxl as opx
 
 print("** " + os.path.basename(__file__) + " **")
 
-outpath = "time_analysis.xlsx"
+outpath = "time_analysis_Adult.xlsx"
 writer  = pd.ExcelWriter(outpath)
 
-drop_path = "C://Users//itaken322//Dropbox//Inbox//Experiment//Joint Action_Ladder//Analyze_R//time_analysis.xlsx"
+drop_path = "C://Users//itaken322//Dropbox//Inbox//Experiment//Joint Action_Ladder//Analyze_R//time_analysis_Adult.xlsx"
 # ログファイルの読み込み
 log_list = os.listdir("Log_files/")
 
 # 元ファイルの読み込み
-base    = pd.ExcelFile("time_analysis.xlsx")
+base    = pd.ExcelFile("time_analysis_Adult.xlsx")
 df_base = base.parse('time', index_col="s")
 
 try:
@@ -37,7 +37,7 @@ if len(write_list) > 0:
     print("Run Process")
     time_set = pd.DataFrame()
     for wt in write_list:
-        if "demo" not in wt:
+        if "demo" in wt:
             ID = wt[0:6]  # ID名を取得
             print("Begin  " + ID)
             wt = "Log_files/" + wt
