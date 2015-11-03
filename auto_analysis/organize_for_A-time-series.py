@@ -14,6 +14,13 @@ drop_path = "C://Users//itaken322//Dropbox//Inbox//Experiment//Joint Action_Ladd
 # ログファイルの読み込み
 log_list = os.listdir("Log_files/")
 
+# 参加者情報ファイル
+sub_path = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//Participant//subject_ladder.csv"
+
+subject = pd.read_csv(sub_path)
+subject.drop(subject.columns[[2, 4, 5]], axis=1, inplace=True)  # いらない行の削除
+
+
 # 元ファイルの読み込み
 base    = pd.ExcelFile("time_analysis_Adult.xlsx")
 df_base = base.parse('time', index_col="s")
@@ -40,6 +47,7 @@ if len(write_list) > 0:
         if "demo" in wt:
             ID = wt[0:6]  # ID名を取得
             print("Begin  " + ID)
+            sub_ID = subject[subject["s"] == ID]  # 参加者情報
             wt = "Log_files/" + wt
 
             df = pd.read_csv(wt)
@@ -52,6 +60,7 @@ if len(write_list) > 0:
 
             df = df[df["step"] > 0]
             df = df[df["step"] < 43]
+            df = df.assign(sex=sub_ID["M/F"].item(), age=sub_ID["age_days"].item())
             time_set = pd.concat([time_set, df], ignore_index=True)  # indexを無視してデータフレームを合体
             print("End  " + ID)
         else:
