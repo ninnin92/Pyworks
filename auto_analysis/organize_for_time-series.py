@@ -58,7 +58,7 @@ if len(write_list) > 0:
 
             df["ID"] = ID_colm  # データフレームに追加
 
-            df = df[df["step"] > 0]
+            df = df[df["step"] > 2]
             df = df[df["step"] < 43]
             df = df.assign(sex=sub_ID["M/F"].item(), age=sub_ID["age_days"].item())
             time_set = pd.concat([time_set, df], ignore_index=True)  # indexを無視してデータフレームを合体
