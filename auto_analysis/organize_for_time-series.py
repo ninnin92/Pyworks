@@ -20,6 +20,8 @@ sub_path = "C://Users//itaken322//Documents//Experiment//Joint Action_Ladder//Pa
 subject = pd.read_csv(sub_path)
 subject.drop(subject.columns[[2, 4, 5]], axis=1, inplace=True)  # いらない行の削除
 
+ignore_list = ["H27-08", "H27-25", "H27-26",
+               "H27-29", "H27-30", "H27-32"]
 
 # 元ファイルの読み込み
 base    = pd.ExcelFile("time_analysis.xlsx")
@@ -46,6 +48,10 @@ if len(write_list) > 0:
     for wt in write_list:
         if "demo" not in wt:
             ID = wt[0:6]  # ID名を取得
+
+            if ID in ignore_list:
+                continue
+
             print("Begin  " + ID)
             sub_ID = subject[subject["s"] == ID]  # 参加者情報
             wt = "Log_files/" + wt
@@ -58,7 +64,7 @@ if len(write_list) > 0:
 
             df["ID"] = ID_colm  # データフレームに追加
 
-            df = df[df["step"] > 2]
+            df = df[df["step"] > 0]
             df = df[df["step"] < 43]
             df = df.assign(sex=sub_ID["M/F"].item(), age=sub_ID["age_days"].item())
             time_set = pd.concat([time_set, df], ignore_index=True)  # indexを無視してデータフレームを合体
