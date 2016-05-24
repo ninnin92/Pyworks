@@ -40,7 +40,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="input_target1_days">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -92,7 +92,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="input_target2_days">
     <property name="geometry">
      <rect>
       <x>290</x>
@@ -113,7 +113,7 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit_2">
+   <widget class="QDateEdit" name="input_birthday">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -192,7 +192,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="change_mode">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -217,7 +217,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="input_target2_years">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -238,7 +238,7 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="input_target1_years">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -286,7 +286,7 @@
      <set>Qt::AlignCenter</set>
     </property>
     <property name="buddy">
-     <cstring>dateEdit</cstring>
+     <cstring>input_research_date</cstring>
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
@@ -370,7 +370,7 @@
      <set>Qt::AlignCenter</set>
     </property>
     <property name="buddy">
-     <cstring>dateEdit_2</cstring>
+     <cstring>input_birthday</cstring>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
@@ -400,7 +400,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="input_target1_months">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -478,10 +478,10 @@
      <set>Qt::AlignCenter</set>
     </property>
     <property name="buddy">
-     <cstring>comboBox</cstring>
+     <cstring>change_mode</cstring>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="pushButton_Clear">
     <property name="geometry">
      <rect>
       <x>250</x>
@@ -499,7 +499,7 @@
      <string>Clear</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="pushButton_Go">
     <property name="geometry">
      <rect>
       <x>90</x>
@@ -517,7 +517,7 @@
      <string>Go</string>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="input_research_date">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -616,7 +616,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="input_target2_months">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -718,7 +718,7 @@
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox_2">
+   <widget class="QComboBox" name="switch_target_age">
     <property name="geometry">
      <rect>
       <x>120</x>
@@ -746,7 +746,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -765,7 +765,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>pushButton_Go</sender>
    <signal>clicked()</signal>
    <receiver>textBrowser</receiver>
    <slot>reload()</slot>
@@ -781,7 +781,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButton_Clear</sender>
    <signal>clicked()</signal>
    <receiver>textBrowser</receiver>
    <slot>clear()</slot>
@@ -793,38 +793,6 @@
     <hint type="destinationlabel">
      <x>560</x>
      <y>432</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>calendarWidget</sender>
-   <signal>clicked(QDate)</signal>
-   <receiver>dateEdit</receiver>
-   <slot>setDate(QDate)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>457</x>
-     <y>214</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>249</x>
-     <y>240</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>calendarWidget</sender>
-   <signal>clicked(QDate)</signal>
-   <receiver>dateEdit_2</receiver>
-   <slot>setDate(QDate)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>491</x>
-     <y>207</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>248</x>
-     <y>296</y>
     </hint>
    </hints>
   </connection>
