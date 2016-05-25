@@ -21,7 +21,7 @@ class MainWindow(QMainWindow, ui_ageindays.Ui_AgeInDays):
         self.pushButton_Go.clicked.connect(self.calculate)
         self.pushButton_Clear.clicked.connect(self.textBrowser.clear)
         self.switch_target_age.activated.connect(self.target_mode_change)
-        self.switch_target_range.activated.connect(self.target_range_change)
+        self.switch_target_range.activated.connect(self.target_mode_change)
         self.input_birthday.setDate(QDate.currentDate())
         self.input_research_date.setDate(QDate.currentDate())
 
@@ -97,8 +97,8 @@ class MainWindow(QMainWindow, ui_ageindays.Ui_AgeInDays):
 
         return results
 
-    # 対象年齢と調査予定日から誕生日を推定
-    def age_to_birthday(self):
+    # 対象年齢を確認
+    def get_target_age(self):
         target_mode = self.switch_target_age.currentText()
         target_range = self.switch_target_range.currentText()
 
@@ -106,70 +106,126 @@ class MainWindow(QMainWindow, ui_ageindays.Ui_AgeInDays):
             if target_mode == "月齢":
                 Age1_months = int(self.input_target1_months.text())
                 Age1_days = int(self.input_target1_days.text())
-                Age1 = [str(Age1_months//12), str(Age1_months%12), str(Age1_days)]
-                return Age1
+                Age1 = [Age1_months//12, Age1_months%12, Age1_days]
+
+                Age2_months = int(self.input_target2_months.text())
+                Age2_days = int(self.input_target2_days.text())
+                Age2 = [Age2_months//12, Age2_months%12, Age2_days]
 
             else:
-                pass
+                Age1_years = int(self.input_target1_years.text())
+                Age1_months = int(self.input_target1_months.text())
+                Age1_days = int(self.input_target1_days.text())
+                Age1 = [Age1_years, Age1_months, Age1_days]
+
+                Age2_years = int(self.input_target2_years.text())
+                Age2_months = int(self.input_target2_months.text())
+                Age2_days = int(self.input_target2_days.text())
+                Age2 = [Age2_years, Age2_months, Age2_days]
+
+            return [Age1, Age2]
 
         else:
             if target_mode == "月齢":
-                pass
+                Age3_months = int(self.input_target1_months.text())
+                Age3_days = int(self.input_target1_days.text())
+                Age3 = [Age3_months//12, Age3_months%12, Age3_days]
 
             else:
-                pass
+                Age3_years = int(self.input_target1_years.text())
+                Age3_months = int(self.input_target1_months.text())
+                Age3_days = int(self.input_target1_days.text())
+                Age3 = [Age3_years, Age3_months, Age3_days]
 
-        """set_days = int(age[2])  # 年齢（日）
-        set_months = base.month - int(age[1])  # 調査予定日の月から年齢（月）を引く
+            return [Age3]
 
-        # 引いた月の数がマイナスになる時は、年齢からもう1年引いて、月に12ヶ月足す → 再計算
-        if set_months <= 0:
-            set_years = base.year - int(age[0]) - 1
-            set_months = 12 + set_months
+    # 対象年齢と調査予定日から誕生日を推定
+    def age_to_birthday(self):
+        research_date_set = self.input_research_date.date().toString("yyyy/MM/dd")
+        research_date = datetime.strptime(research_date_set, "%Y/%m/%d")
+        research_date = date(research_date.year, research_date.month, research_date.day)
+
+        age_list = self.get_target_age()
+        cal_result = []
+
+        for age in age_list:
+            set_days = int(age[2])  # 年齢（日）
+            set_months = research_date.month - int(age[1])  # 調査予定日の月から年齢（月）を引く
+
+            # 引いた月の数がマイナスになる時は、年齢からもう1年引いて、月に12ヶ月足す → 再計算
+            if set_months <= 0:
+                set_years = research_date.year - int(age[0]) - 1
+                set_months = 12 + set_months
+            else:
+                set_years = research_date.year - int(age[0])  # 調査予定日の年から年齢（年）を引く
+
+            # 調査予定日を基準に年齢の年・月を引いてから日を引き算
+            try:
+                bd = research_date.replace(year=set_years, month=set_months)
+                # 調査予定日から年と月を計算後に変更
+                bd -= timedelta(days=set_days)  # 変更後から日数を変更
+
+            # 調査予定日が29-31日で、変更後の月が2月（29-31日）、4・6・9・11月（31日）だとエラー（存在しないため）
+            except ValueError:
+                # 調査予定日から年と月を計算後に変更、日は変更後の月末にとりあえず指定
+                bd = research_date.replace(year=set_years, month=set_months,
+                                  day=cal.monthrange(set_years, set_months)[1])
+                bd += timedelta(days=research_date.day - bd.day)
+                # とりあえず変更した日数（減らした日数分）を追加
+                bd -= timedelta(days=set_days)  # 変更後から日数を変更
+
+            bd = date(bd.year, bd.month, bd.day)
+            cal_result.append(bd)
+
+        if len(cal_result) > 1:
+            result = ["Birthday: " + str(cal_result[1]) + " ～ " + str(cal_result[0])]
         else:
-            set_years = base.year - int(age[0])  # 調査予定日の年から年齢（年）を引く
+            result = ["Birthday: " + str(cal_result[0])]
 
-        # 調査予定日を基準に年齢の年・月を引いてから日を引き算
-        try:
-            bd = base.replace(year=set_years, month=set_months)  # 調査予定日から年と月を計算後に変更
-            bd -= timedelta(days=set_days)  # 変更後から日数を変更
+        return result
 
-        # 調査予定日が29-31日で、変更後の月が2月（29-31日）、4・6・9・11月（31日）だとエラー（存在しないため）
-        except ValueError:
-            # 調査予定日から年と月を計算後に変更、日は変更後の月末にとりあえず指定
-            bd = base.replace(year=set_years, month=set_months,
-                              day=cal.monthrange(set_years, set_months)[1])
-            bd += timedelta(days=base.day - bd.day)  # とりあえず変更した日数（減らした日数分）を追加
-            bd -= timedelta(days=set_days)  # 変更後から日数を変更
-        bd = date(bd.year, bd.month, bd.day)
-        return bd"""
-
-    """# 対象年齢と誕生日から調査予定日を推定
+    # 対象年齢と誕生日から調査予定日を推定
     def age_to_date(self):
-        set_days = int(age[2])  # 年齢（日）
-        set_months = bd.month + int(age[1])  # 調査予定日の月から年齢（月）を引く
+        birthday_set = self.input_birthday.date().toString("yyyy/MM/dd")
+        birthday = datetime.strptime(birthday_set, "%Y/%m/%d")
+        birthday = date(birthday.year, birthday.month, birthday.day)
 
-        # 引いた月の数がマイナスになる時は、年齢からもう1年引いて、月に12ヶ月足す → 再計算
-        if set_months > 12:
-            set_years = bd.year + int(age[0]) + 1
-            set_months = set_months - 12
+        age_list = self.get_target_age()
+        cal_result = []
+
+        for age in age_list:
+            set_days = int(age[2])  # 年齢（日）
+            set_months = birthday.month + int(age[1])  # 調査予定日の月から年齢（月）を引く
+
+            # 引いた月の数がマイナスになる時は、年齢からもう1年引いて、月に12ヶ月足す → 再計算
+            if set_months > 12:
+                set_years = birthday.year + int(age[0]) + 1
+                set_months = set_months - 12
+            else:
+                set_years = birthday.year + int(age[0])  # 調査予定日の年から年齢（年）を引く
+
+            # 誕生日を基準に年齢の年・月を足してから日を足し算
+            try:
+                d = birthday.replace(year=set_years, month=set_months)  # 誕生日から年と月を計算後に変更
+                d += timedelta(days=set_days)  # 変更後から日数を変更
+
+            # 誕生日が29-31日で、変更後の月が2月（29-31日）、4・6・9・11月（31日）だとエラー（存在しないため）
+            except ValueError:
+                # 誕生日から年と月を計算後に変更、日は変更後の月末にとりあえず指定
+                d = birthday.replace(year=set_years, month=set_months,
+                               day=cal.monthrange(set_years, set_months)[1])
+                d += timedelta(days=birthday.day - d.day)  # とりあえず変更した日数（減らした日数分）を追加
+                d += timedelta(days=set_days)  # 変更後から日数を変更
+
+            d = date(d.year, d.month, d.day)
+            cal_result.append(d)
+
+        if len(cal_result) > 1:
+            result = ["Reserch date: " + str(cal_result[0]) + " ～ " + str(cal_result[1])]
         else:
-            set_years = bd.year + int(age[0])  # 調査予定日の年から年齢（年）を引く
+            result = ["Reserch date: " + str(cal_result[0])]
 
-        # 誕生日を基準に年齢の年・月を足してから日を足し算
-        try:
-            d = bd.replace(year=set_years, month=set_months)  # 誕生日から年と月を計算後に変更
-            d += timedelta(days=set_days)  # 変更後から日数を変更
-
-        # 誕生日が29-31日で、変更後の月が2月（29-31日）、4・6・9・11月（31日）だとエラー（存在しないため）
-        except ValueError:
-            # 誕生日から年と月を計算後に変更、日は変更後の月末にとりあえず指定
-            d = bd.replace(year=set_years, month=set_months,
-                           day=cal.monthrange(set_years, set_months)[1])
-            d += timedelta(days=bd.day - d.day)  # とりあえず変更した日数（減らした日数分）を追加
-            d += timedelta(days=set_days)  # 変更後から日数を変更
-        d = date(d.year, d.month, d.day)
-        return d"""
+        return result
 
     def calculate(self):
         mode = int(self.change_mode.currentText()[0])
@@ -178,35 +234,50 @@ class MainWindow(QMainWindow, ui_ageindays.Ui_AgeInDays):
         elif mode == 2:
             text = self.age_to_birthday()
         elif mode == 3:
-            text = ["さん"]
+            text = self.age_to_date()
         else:
             pass
 
-        text.insert(0, "*******************************")
-        text.append("*******************************")
+        text.insert(0, "--------------------------------------")
+        text.append("--------------------------------------")
 
         for i in text:
             self.textBrowser.append(i)
 
     def target_mode_change(self):
         target_mode = self.switch_target_age.currentText()
-        if target_mode == "月齢":
-            self.input_target1_years.setEnabled(False)
-            self.input_target2_years.setEnabled(False)
-        else:
-            self.input_target1_years.setEnabled(True)
-            self.input_target2_years.setEnabled(True)
+        target_range = self.switch_target_range.currentText()
 
-    def target_range_change(self):
-        target_mode = self.switch_target_range.currentText()
-        if target_mode == "固定":
-            self.input_target2_years.setEnabled(False)
-            self.input_target2_months.setEnabled(False)
-            self.input_target2_days.setEnabled(False)
+        if target_mode == "月齢":
+            if target_range == "固定":
+                self.input_target1_years.setEnabled(False)
+                self.input_target1_months.setEnabled(True)
+                self.input_target1_days.setEnabled(True)
+                self.input_target2_years.setEnabled(False)
+                self.input_target2_months.setEnabled(False)
+                self.input_target2_days.setEnabled(False)
+            else:
+                self.input_target1_years.setEnabled(False)
+                self.input_target1_months.setEnabled(True)
+                self.input_target1_days.setEnabled(True)
+                self.input_target2_years.setEnabled(False)
+                self.input_target2_months.setEnabled(True)
+                self.input_target2_days.setEnabled(True)
         else:
-            self.input_target2_years.setEnabled(True)
-            self.input_target2_months.setEnabled(True)
-            self.input_target2_days.setEnabled(True)
+            if target_range == "固定":
+                self.input_target1_years.setEnabled(True)
+                self.input_target1_months.setEnabled(True)
+                self.input_target1_days.setEnabled(True)
+                self.input_target2_years.setEnabled(False)
+                self.input_target2_months.setEnabled(False)
+                self.input_target2_days.setEnabled(False)
+            else:
+                self.input_target1_years.setEnabled(True)
+                self.input_target1_months.setEnabled(True)
+                self.input_target1_days.setEnabled(True)
+                self.input_target2_years.setEnabled(True)
+                self.input_target2_months.setEnabled(True)
+                self.input_target2_days.setEnabled(True)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
